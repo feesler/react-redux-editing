@@ -1,30 +1,34 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectUpdateService, removeService } from '../actions/actionCreators';
+import { ReactComponent as UpdateIcon } from '../assets/edit.svg';
+import { ReactComponent as DeleteIcon } from '../assets/close.svg';
 
 const ServiceList = () => {
   const items = useSelector(state => state.serviceList);
   const dispatch = useDispatch();
 
-  const handleClick = (e) => {
-    const id = e.currentTarget.dataset.id;
-    const btnAction = e.target.dataset.action;
+  const handleUpdate = (id) => {
+    const item = items.find((service) => service.id === id);
+    dispatch(selectUpdateService(item));
+  }
 
-    if (btnAction === 'update') {
-      const item = items.find((service) => service.id === id);
-      dispatch(selectUpdateService(item));
-    } else if (btnAction === 'remove') {
-      dispatch(removeService(id));
-    }
+  const handleDelete = (id) => {
+    dispatch(removeService(id));
   }
 
   return (
-    <ul>
+    <ul className="service-list">
       {items.map((item) =>
-        <li key={item.id} data-id={item.id} onClick={handleClick}>
-          {item.name} {item.price}
-          <button data-action="update" disabled={item.disabled}>u</button>
-          <button data-action="remove" disabled={item.disabled}>x</button>
+        <li key={item.id} className="service-item"        >
+          <span className="service-item__name">{item.name}</span>
+          <span className="service-item__price">{item.price}</span>
+          <button className="icon-btn" disabled={item.disabled} onClick={() => handleUpdate(item.id)}>
+            <UpdateIcon />
+          </button>
+          <button className="icon-btn" disabled={item.disabled} onClick={() => handleDelete(item.id)} >
+            <DeleteIcon />
+          </button>
         </li>
       )}
     </ul>

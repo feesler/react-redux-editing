@@ -31,11 +31,33 @@ const ServiceForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} onReset={handleReset}>
-      <input type="text" name="name" onChange={handleChange} value={item.name} />
-      <input type="text" name="price" onChange={handleChange} value={item.price} />
-      <button type="submit">Submit</button>
-      { item.id && <button type="reset">Cancel</button>}
+    <form
+      className="service-form"
+      onSubmit={handleSubmit}
+      onReset={handleReset}
+    >
+      <div className="service-form__field">
+        <label>Service name</label>
+        <input
+          className="form-input"
+          type="text"
+          name="name"
+          value={item.name}
+          onChange={handleChange}
+        />
+      </div>
+      <div className="service-form__field">
+        <label>Price</label>
+        <input
+          className="form-input"
+          type="text"
+          name="price"
+          value={item.price}
+          onChange={handleChange}
+        />
+      </div>
+      <button className="form-btn" type="submit">Submit</button>
+      { item.id && <button className="form-btn" type="reset">Cancel</button>}
     </form>
   );
 };
