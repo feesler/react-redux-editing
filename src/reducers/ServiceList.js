@@ -29,11 +29,15 @@ export default function serviceListReducer(state = initialState, action) {
     }
 
     case UPDATE_SERVICE: {
-      const { id, name, price } = action.payload;
-      return [
-        ...state.filter((item) => item.id !== id),
-        { id, name, price },
-      ];
+      const updatedItem = { ...action.payload };
+      return {
+        ...state,
+        items: [
+          ...state.items.filter((item) => item.id !== updatedItem.id),
+          updatedItem,
+        ],
+        editing: null,
+      };
     }
 
     case SELECT_UPDATE_SERVICE: {
