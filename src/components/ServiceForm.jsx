@@ -1,9 +1,17 @@
 import React from 'react';
+import classNames from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
-import { addService, updateService, changeServiceField, resetServiceForm } from '../actions/actionCreators';
+import {
+  addService,
+  updateService,
+  changeServiceField,
+  invalidateServiceField,
+  resetServiceForm,
+} from '../actions/actionCreators';
+
 
 const ServiceForm = () => {
-  const item = useSelector(state => state.serviceForm);
+  const { values, validation } = useSelector(state => state.serviceForm);
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
@@ -19,14 +27,21 @@ const ServiceForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!item.name.length || !Number(item.price)) {
+    if (!values.name.length) {
+      dispatch(invalidateServiceField('name'));
       return;
     }
 
-    if (item.id) {
-      dispatch(updateService(item.id, item.name, item.price));
+    const price = Number(values.price);
+    if (!price || price < 0) {
+      dispatch(invalidateServiceField('price'));
+      return;
+    }
+
+    if (values.id) {
+      dispatch(updateService(values.id, values.name, values.price));
     } else {
-      dispatch(addService(item.name, item.price));
+      dispatch(addService(values.name, values.price));
     }
   }
 
@@ -39,25 +54,27 @@ const ServiceForm = () => {
       <div className="service-form__field">
         <label>Service name</label>
         <input
-          className="form-input"
+          className={classNames('form-input', { 'is-invalid': !validation.name })}
           type="text"
           name="name"
-          value={item.name}
+          value={values.name}
           onChange={handleChange}
         />
+        <span className="invalid-feedback">Name can not be empty</span>
       </div>
       <div className="service-form__field">
         <label>Price</label>
         <input
-          className="form-input"
+          className={classNames('form-input', { 'is-invalid': !validation.price })}
           type="text"
           name="price"
-          value={item.price}
+          value={values.price}
           onChange={handleChange}
         />
+        <span className="invalid-feedback">Price must be a positive number</span>
       </div>
       <button className="form-btn" type="submit">Submit</button>
-      { item.id && <button className="form-btn" type="reset">Cancel</button>}
+      { values.id && <button className="form-btn" type="reset">Cancel</button>}
     </form>
   );
 };

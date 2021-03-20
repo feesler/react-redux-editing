@@ -4,6 +4,7 @@ import {
   REMOVE_SERVICE,
   SELECT_UPDATE_SERVICE,
   CHANGE_SERVICE_FIELD,
+  INVALIDATE_SERVICE_FIELD,
   RESET_SERVICE_FORM,
 } from './actionTypes';
 
@@ -25,6 +26,10 @@ export function selectUpdateService(service) {
 
 export function changeServiceField(name, value) {
   return { type: CHANGE_SERVICE_FIELD, payload: { name, value } };
+}
+
+export function invalidateServiceField(name) {
+  return { type: INVALIDATE_SERVICE_FIELD, payload: { name } };
 }
 
 export function resetServiceForm() {

@@ -23,6 +23,21 @@ body {
   box-sizing: border-box;
   padding: 0.25rem;
   height: 2.2rem;
+  border: 1px solid #000000;
+}
+
+.is-invalid {
+  border-color: #dc1515;
+}
+
+.invalid-feedback {
+  visibility: hidden;
+  font-size: 0.75rem;
+  color: #dc1515;
+}
+
+.is-invalid ~ .invalid-feedback {
+  visibility: visible;
 }
 
 .form-btn {
@@ -30,7 +45,7 @@ body {
   padding: 0.25rem;
   height: 2.2rem;
   border: 0 none;
-  margin: 1px;
+  margin: 1px 1px 1rem 1px;
   background-color: #ececec;
   cursor: pointer;
 }
